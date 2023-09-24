@@ -21,9 +21,11 @@ The following items are required for this app to operate with your Hubitat:
 1. Log into your Hubitat, go to "Apps Code" and click the button for "+ New App"
 1. Click the "Import" button, paste the URL https://raw.githubusercontent.com/TheDanHealy/hubitat-airbnb-automator/main/hubitat-airbnb-automator.groovy, click the button "Import", click "OK to confirm you want to overwrite, and finally click the "Save" button.
 1. In the Hubitat menu, go to "Apps", click the button "+ Add User App", and finally click on "AirBNB Automator"
-1. Supply all the required information in the settings page and click the button "Save"
-1. Click the button "Test" to test and verify there's no issues with your AirBNB Calendar URL
+1. Supply all the required information in the settings page and click the button "Done"
+1. Click back into the AirBNB Automator app, click the button "Test" to test and verify there's no issues with your AirBNB Calendar URL
 1. If everything looks OK, finally, click the button "Enable AirBNB Automation"
+
+At this point, you can use whatever app you please to control what automations happen when the configured "Modes" (like Check-In) are triggered. I like to the the Simple Automation Rules or Rule Machine to turn on/off lights, set thermostats, and more.
 
 That's it :)
 
