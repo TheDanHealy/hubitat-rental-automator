@@ -8,7 +8,8 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 Version History
 
-1.0     Initial Release
+1.0.0     Initial Release
+1.0.1     Update documentation to mention what to do next with the configured modes
 
 */
 
