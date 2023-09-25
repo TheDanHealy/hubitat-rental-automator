@@ -56,7 +56,7 @@ preferences {
             if(state.testCalendarUrlState) {
                 paragraph "<p style=\"color:green;\">AirBNB Calendar URL Verified & Tested</p>"
             } 
-            if(!state.testCalendarUrlState) {
+            if(!state.testCalendarUrlState && state.testCalendarUrlState != null) {
                 paragraph "<p style=\"color:red;\"><strong>There's an issue with the AirBNB Calendar URL. Please check the URL and Hubitat logs and re-try</strong></p>"
             }
         }
