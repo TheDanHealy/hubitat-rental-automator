@@ -1,8 +1,8 @@
 {
   "packageName": "Rental Automator",
   "author": "TheDanHealy",
-  "version": "1.0.0",
-  "minimumHEVersion": "0.0",
+  "version": "1.0.1",
+  "minimumHEVersion": "2.3",
   "documentationLink": "https://github.com/TheDanHealy/hubitat-rental-automator",
   "communityLink": "https://community.hubitat.com/t/release-rental-automator-for-airbnb",
   "dateReleased": "2023-09-29",
@@ -16,7 +16,7 @@
       "required": true,
       "oauth": false,
       "primary": true,
-      "version": "1.0.0"
+      "version": "1.0.1"
     }
   ]
 }

@@ -381,6 +381,7 @@ def checkinToday(iCalData, forceEventOverride) {
     for(event in iCalData) {
         eventIsToday = false
         eventIsReserved = false
+        eventPhone = false
         def todaysDate = new Date().format( 'yyyyMMdd' )
         if(debugMode) log.debug "Today's date is ${todaysDate}"
         if(debugMode) log.debug "The iCalData being analyzed for checkinToday is ${event}"
@@ -406,7 +407,9 @@ def checkinToday(iCalData, forceEventOverride) {
             }
             if(itemStr[0]=="phone") {
                 if(debugMode) log.debug "The phone is ${itemStr[1]}"
-                eventPhone = itemStr[1].toInteger()
+                if(itemStr[1] != "null") {
+                    eventPhone = itemStr[1].toInteger()
+                }
             }
         }
         if(forceEventOverride) log.debug "The status of eventIsToday is ${eventIsToday} and eventIsReserved is ${eventIsReserved}"
