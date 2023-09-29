@@ -6,17 +6,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Version History
-
-1.0     Initial Release
-
 */
 
 definition(
-    name: "AirBNB Automator",
-    namespace: "thedanhealy-airbnb",
+    name: "Rental Automator",
+    namespace: "thedanhealy-rental-automator",
     author: "TheDanHealy",
-    description: "Automation for AirBNB",
+    description: "Rental Automation for AirBNB",
     category: "Convenience",
     iconUrl: "",
     iconX2Url: ""
@@ -34,7 +30,7 @@ import groovy.json.JsonSlurper
 preferences {
     page(name: "mainPage", install: true, uninstall: true) {
         section {
-            paragraph """<h1>AirBNB Automator by <a href="https://thedanhealy.com" target="_blank"">Dan Healy</h1></a>"""
+            paragraph """<h1>Rental Automator by <a href="https://thedanhealy.com" target="_blank"">Dan Healy</h1></a>"""
             paragraph """If you enjoy using this app, please consider donating to the <a href="https://brotherson3.org" target="_blank"><strong>Josh Minton Foundation</strong></a>. I created this app to help our foundation better manage the AirBNB guests, which provides us with extra funding inbetween our no-cost therapeutic stays. I am now offering this app to the community for free, but in hopes that you'll also donate back in appreciation for the free usage."""
         }
         section {
@@ -145,7 +141,7 @@ def convertTimeToCron(timeVar, minutesToSubtract = 0) {
     calendar.add(Calendar.MINUTE, (-1 * minutesToSubtract.toInteger()) )
     timeVarObj = calendar.getTime()
     if(debugMode) log.debug "The timeVarObj is " + timeVarObj
-    String hour = calendar.get(Calendar.HOUR)
+    String hour = calendar.get(Calendar.HOUR_OF_DAY)
     String minute = calendar.get(Calendar.MINUTE)
     String cronExp = "0 ${minute} ${hour} * * ?"
     return cronExp
