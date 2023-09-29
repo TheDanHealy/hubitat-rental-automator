@@ -19,7 +19,7 @@ The following items are required for this app to operate with your Hubitat:
 # Setup Instructions
 
 1. Log into your Hubitat, go to "Apps Code" and click the button for "+ New App"
-1. Click the "Import" button, paste the URL https://raw.githubusercontent.com/TheDanHealy/hubitat-rental-automator/main/hubitate-rental-automator/hubitat-rental-automator.groovy, click the button "Import", click "OK to confirm you want to overwrite, and finally click the "Save" button.
+1. Click the "Import" button, paste the URL https://raw.githubusercontent.com/TheDanHealy/hubitat-rental-automator/main/hubitat-rental-automator/hubitat-rental-automator.groovy, click the button "Import", click "OK to confirm you want to overwrite, and finally click the "Save" button.
 1. In the Hubitat menu, go to "Apps", click the button "+ Add User App", and finally click on "Hubitat Rental Automator"
 1. Supply all the required information in the settings page and click the button "Save"
 1. Click the button "Test" to test and verify there's no issues with your AirBNB Calendar URL
