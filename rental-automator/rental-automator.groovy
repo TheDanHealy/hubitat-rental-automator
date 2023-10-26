@@ -389,7 +389,7 @@ def checkinToday(iCalData, forceEventOverride) {
             def itemStr = item.toString().split("=")
             if(itemStr[0]=="startDate") {
                 if(debugMode) log.debug "The start Date is ${itemStr[1]}"
-                if(todaysData == itemStr[1]) {
+                if(todaysDate == itemStr[1]) {
                     if(debugMode) log.debug "Found an event that starts today"
                     eventIsToday = true
                 }
@@ -441,7 +441,7 @@ def checkoutToday(iCalData, forceEventOverride) {
             def itemStr = item.toString().split("=")
             if(itemStr[0]=="endDate") {
                 if(debugMode) log.debug "The end Date is ${itemStr[1]}"
-                if(todaysData == itemStr[1]) {
+                if(todaysDate == itemStr[1]) {
                     if(debugMode) log.debug "Found an event that ends today"
                     eventIsToday = true
                 }
