@@ -157,29 +157,31 @@ def checkinProcedure(forceEventOverride = false) {
             log.info "Running the AirBNB Check-In Procedure"
             if(debugMode) log.debug "The data for today's Check-In is ${checkinTodayData}"
             location.setMode(checkinMode)
-            int retries = 0
-            while(retries<3) {
-                if(!programLocksAtCheckinPrep) {
-                    doorLocks.each { lock ->
+            if(!programLocksAtCheckinPrep) {
+                doorLocks.each { lock ->
+                    int retries = 0
+                    while(retries<10) {
                         def nextAvailableCodePosition = findNextAvailableCodePosition(lock)
                         if(debugMode) log.debug "The next available code position returned is ${findNextAvailableCodePosition}"
                         if(nextAvailableCodePosition) {
                             if(debugMode) log.debug "Programming the door lock code now"
                             programDoorLockCode(lock, nextAvailableCodePosition.toInteger(), checkinTodayData.toString())
+                            runIn(5, waiting)
                             def checkIfCodeExists = findExistingAirbnbCodePosition(lock)
                             if(checkIfCodeExists) {
                                 return
                             } else {
                                 retries = retries + 1
                             }
+                            retries = retries + 1
                         }
                     }
                 }
             }
-            log.info "Successfully ran the Check-In procedure and changed the mode to ${checkinMode}"
-            if(!notificationOnErrorsOnly) {
-                sendNotification "Successfully ran the Check-In procedure"
-            }
+        }
+        log.info "Successfully ran the Check-In procedure and changed the mode to ${checkinMode}"
+        if(!notificationOnErrorsOnly) {
+            sendNotification "Successfully ran the Check-In procedure"
         }
     } catch (Exception e) {
         log.error "There was an error running the Check-In Procedure, ${e}"
@@ -199,18 +201,23 @@ def checkinPrepProcedure(forceEventOverride = false) {
             location.setMode(checkinPrepMode)
             if(programLocksAtCheckinPrep) {
                 doorLocks.each { lock ->
-                    def nextAvailableCodePosition = findNextAvailableCodePosition(lock)
-                    if(debugMode) log.debug "The next available code position returned is ${findNextAvailableCodePosition}"
-                    if(nextAvailableCodePosition) {
-                        if(debugMode) log.debug "Programming the door lock code now"
-                        programDoorLockCode(lock, nextAvailableCodePosition.toInteger(), checkinTodayData.toString())
-                        def checkIfCodeExists = findExistingAirbnbCodePosition(lock)
-                        if(checkIfCodeExists) {
-                            return
-                        } else {
-                            retries = retries + 1
+                    int retries = 0
+                    while(retries<10) {
+                        def nextAvailableCodePosition = findNextAvailableCodePosition(lock)
+                        if(debugMode) log.debug "The next available code position returned is ${findNextAvailableCodePosition}"
+                        if(nextAvailableCodePosition) {
+                            if(debugMode) log.debug "Programming the door lock code now"
+                            programDoorLockCode(lock, nextAvailableCodePosition.toInteger(), checkinTodayData.toString())
+                            runIn(5, waiting)
+                            def checkIfCodeExists = findExistingAirbnbCodePosition(lock)
+                            if(checkIfCodeExists) {
+                                return
+                            } else {
+                                retries = retries + 1
+                            }
                         }
                     }
+                    if(retries>=10) throw new Exception("There was an issue programming the door lock code")
                 }
             }
             log.info "Successfully ran the Check-In Prep procedure and changed the mode to ${checkinPrepMode}"
@@ -382,7 +389,7 @@ def checkinToday(iCalData, forceEventOverride) {
         eventIsToday = false
         eventIsReserved = false
         eventPhone = false
-        def todaysDate = new Date().format( 'yyyyMMdd' )
+        String todaysDate = new Date().format( 'yyyyMMdd' )
         if(debugMode) log.debug "Today's date is ${todaysDate}"
         if(debugMode) log.debug "The iCalData being analyzed for checkinToday is ${event}"
         for(item in event) {
@@ -485,7 +492,7 @@ def findExistingAirbnbCodePosition(lock) {
         for(codeData in codePosition.value) {
             if(codeData.key == "name") {
                 if(debugMode) log.debug "The code name is ${codeData.value}"
-                if(codeData.value == "AirBNB") {
+                if(codeData.value == "RentalAutomator") {
                     if(debugMode) log.debug "KEY FOUND at position ${codePosition.key}"
                     airbnbCodePosition = codePosition.key.toInteger()
                     codeAvailable = true
@@ -529,7 +536,7 @@ def programDoorLockCode(lock, position, code) {
     if(debugMode) log.debug "The position is ${position}"
     if(debugMode) log.debug "The code is ${code}"
     try {
-        lock.setCode(codeposition = position, pincode = code, name = "AirBNB")
+        lock.setCode(codeposition = position, pincode = code, name = "RentalAutomator")
     } catch(Exception e) {
         log.error "There was an error programming the door lock code, ${e}"
         return false
@@ -547,4 +554,8 @@ def deleteDoorLockCode(lock, position) {
         return false
     }
     return true
+}
+
+void waiting() {
+    log.info "Waiting to check the lock programming"
 }
