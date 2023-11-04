@@ -415,7 +415,7 @@ def checkinToday(iCalData, forceEventOverride) {
             if(itemStr[0]=="phone") {
                 if(debugMode) log.debug "The phone is ${itemStr[1]}"
                 if(itemStr[1] != "null") {
-                    eventPhone = itemStr[1].toInteger()
+                    eventPhone = itemStr[1]
                 }
             }
         }
