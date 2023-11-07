@@ -35,12 +35,12 @@ preferences {
         }
         section {
             if(state.enabled) {
-                input name: "disableButton", type: "button", title: "Disable AirBNB Automation"
-                paragraph "<p style=\"color:green;\">The AirBNB automation is currently enabled</p>"
+                input name: "disableButton", type: "button", title: "Disable Rental Automator"
+                paragraph "<p style=\"color:green;\">The Rental Automator is currently enabled</p>"
             }
             if(!state.enabled) {
-                input name: "enableButton", type: "button", title: "Enable AirBNB Automation"
-                paragraph "<p style=\"color:red;\"><strong>The AirBNB automation is currently disabled</strong></p>"
+                input name: "enableButton", type: "button", title: "Enable Rental Automator"
+                paragraph "<p style=\"color:red;\"><strong>The Rental Automator is currently disabled</strong></p>"
             }
         }
         section {

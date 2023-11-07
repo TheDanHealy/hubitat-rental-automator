@@ -18,6 +18,21 @@ The following items are required for this app to operate with your Hubitat:
 
 # Setup Instructions
 
+## Easy Installation using Hubitat Package Manager
+
+1. Install Hubitat Package Manager (per instructions [here](https://hubitatpackagemanager.hubitatcommunity.com/installing.html))
+1. In the Hubitat menu, go to "Apps" -> "Hubitat Package Manager" -> "Install" -> "Search By Keyword"
+1. In the search criteria field, type "Renatal Automator" and click "Next". You can leave "Fast Search" on or off.
+1. Click on "Rental Automator by TheDanHealy"
+1. On the "Install a Package from a Repository" page, click "Next"
+1. On the "Ready to install" page, leave the toggle switch on to configure the installed package after the installation completes and click "Next"
+1. On the "Installation complete" page, click "Next"
+1. Start filling in the settings for the Rental Automator app and enjoy
+
+## Manual Installation
+
+This method does not inform you when there are updates available.
+
 1. Log into your Hubitat, go to "Apps Code" and click the button for "+ New App"
 1. Click the "Import" button, paste the URL https://raw.githubusercontent.com/TheDanHealy/hubitat-rental-automator/main/rental-automator/rental-automator.groovy, click the button "Import", click "OK to confirm you want to overwrite, and finally click the "Save" button.
 1. In the Hubitat menu, go to "Apps", click the button "+ Add User App", and finally click on "Hubitat Rental Automator"

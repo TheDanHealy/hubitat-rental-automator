@@ -1,12 +1,12 @@
 {
   "packageName": "Rental Automator",
   "author": "TheDanHealy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "minimumHEVersion": "2.3",
   "documentationLink": "https://github.com/TheDanHealy/hubitat-rental-automator",
   "communityLink": "https://community.hubitat.com/t/release-rental-automator-for-airbnb",
   "dateReleased": "2023-11-01",
-  "releaseNotes": "Initial Release",
+  "releaseNotes": "Version 1.0.3\n - Fixed bug when the last four digits of the guests phone number starts with a zero.\n - Update README.md with HPM installation instructions\n - Updated Enable & Disable buttons to reflect \"Rental Automator\" instead of original name",
   "apps": [
     {
       "id": "37f26328-ac23-4ec6-bfb6-871a21ca3ef3",
@@ -16,7 +16,7 @@
       "required": true,
       "oauth": false,
       "primary": true,
-      "version": "1.0.2"
+      "version": "1.0.3"
     }
   ]
 }
