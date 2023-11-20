@@ -83,6 +83,7 @@ preferences {
         }
         section {
             paragraph "<h2>Notification Settings</h2><hr>"
+            input name: "raHubName", type: "text", title: "What name do you want to use for this Hub in your notifications?", required: false
             input "notificationDevices", "capability.notification", title: "Which devices do you want to use for push notifications?", multiple: true, required: false, submitOnChange: true
             if(debugMode) input name: "sendTestNotification", type: "button", title: "Debug: Send Test Notification"
             input name: "notificationOnErrorsOnly", type: "bool", title: "Do you want to only be notified when there's error? Otherwise, a notification will be sent when each mode gets activated", submitOnChange: true
@@ -166,7 +167,7 @@ def checkinProcedure(forceEventOverride = false) {
                         if(nextAvailableCodePosition) {
                             if(debugMode) log.debug "Programming the door lock code now"
                             programDoorLockCode(lock, nextAvailableCodePosition.toInteger(), checkinTodayData.toString())
-                            runIn(5, waiting)
+                            pauseExecution(10000)
                             def checkIfCodeExists = findExistingAirbnbCodePosition(lock)
                             if(checkIfCodeExists) {
                                 return
@@ -178,10 +179,10 @@ def checkinProcedure(forceEventOverride = false) {
                     }
                 }
             }
-        }
-        log.info "Successfully ran the Check-In procedure and changed the mode to ${checkinMode}"
-        if(!notificationOnErrorsOnly) {
-            sendNotification "Successfully ran the Check-In procedure"
+            log.info "Successfully ran the Check-In procedure and changed the mode to ${checkinMode}"
+            if(!notificationOnErrorsOnly) {
+                sendNotification "Successfully ran the Check-In procedure"
+            }
         }
     } catch (Exception e) {
         log.error "There was an error running the Check-In Procedure, ${e}"
@@ -208,7 +209,7 @@ def checkinPrepProcedure(forceEventOverride = false) {
                         if(nextAvailableCodePosition) {
                             if(debugMode) log.debug "Programming the door lock code now"
                             programDoorLockCode(lock, nextAvailableCodePosition.toInteger(), checkinTodayData.toString())
-                            runIn(5, waiting)
+                            pauseExecution(10000)
                             def checkIfCodeExists = findExistingAirbnbCodePosition(lock)
                             if(checkIfCodeExists) {
                                 return
@@ -333,8 +334,6 @@ def iCalToMapListAirBnB(str) {
             def eventText = match
 
             event.summary = extractProperty(eventText, "SUMMARY")
-            //event.startDate = parseICalDate(extractProperty(eventText, "DTSTART;VALUE=DATE"))
-            //event.endDate = parseICalDate(extractProperty(eventText, "DTEND;VALUE=DATE"))
             event.startDate = extractProperty(eventText, "DTSTART;VALUE=DATE")
             event.endDate = extractProperty(eventText, "DTEND;VALUE=DATE")
             event.phone = extractProperty(eventText, "Last 4 Digits.")
@@ -354,8 +353,10 @@ def extractProperty(eventText, propertyName) {
     def pattern = Pattern.compile(".*?${propertyName}:(.*?)\\r?\\n")
     def matcher = pattern.matcher(eventText)
     if (matcher.find()) {
-        if(debugMode) log.debug "There was a match for ${matcher.group(1)}"
-        return matcher.group(1)
+        String result = matcher.group(1)
+        String trimmedResult = result.replace("\\n", "").trim()
+        if(debugMode) log.debug "There was a match for ${trimmedResult}"
+        return trimmedResult
     } else {
         if(debugMode) log.debug "There was no matched pattern for ${propertyName} in the string ${eventText}"
         return null
@@ -372,7 +373,11 @@ void sendNotification(msg) {
     try {
         notificationDevices.each { device ->
             if(debugMode) log.debug "Sending a push notification to ${device} with message \"${msg}\""
-            device.deviceNotification("AirBNB: ${msg}")
+            if(raHubName) {
+                device.deviceNotification("Rental Automator (${raHubName}): ${msg}")
+            } else {
+                device.deviceNotification("Rental Automator: ${msg}")
+            }
         }
     } catch (Exception e) {
         log.error "Unable to run the Sent Test Notification because there's no devices selected"
@@ -483,10 +488,10 @@ def findExistingAirbnbCodePosition(lock) {
     int airbnbCodePosition = 0
     Boolean codeAvailable = false
     if(debugMode) log.debug "Getting the door lock codes"
-    def codes = lock.currentState("lockCodes").value
+    def codes = lock.currentValue("lockCodes", true)
     if(debugMode) log.debug "The door lock codes from ${lock} are ${codes}"
-    def jsonSlurper = new JsonSlurper()
-    def codeJson = jsonSlurper.parseText(codes)
+    def codeJson
+    codeJson = new JsonSlurper().parseText(codes)
     for(codePosition in codeJson) {
         if(debugMode) log.debug "The code position is ${codePosition.value} in ${codePosition.key}"
         for(codeData in codePosition.value) {
@@ -512,12 +517,12 @@ def findExistingAirbnbCodePosition(lock) {
 def findNextAvailableCodePosition(lock) {
     int availableCodePosition = 1
     Boolean codeAvailable = false
-    def codes = lock.currentState("lockCodes").value
+    def codes = lock.currentValue("lockCodes", true)
     if(debugMode) log.debug "The lockCodes are ${codes}"
-    int maxCodes = lock.currentState("maxCodes").value.toInteger()
+    int maxCodes = lock.currentValue("maxCodes").toInteger()
     if(debugMode) log.debug "The maximum number of codes allowed ${maxCodes}"
-    def jsonSlurper = new JsonSlurper()
-    def codeJson = jsonSlurper.parseText(codes)
+    def codeJson
+    codeJson = new JsonSlurper().parseText(codes)
     def codeJsonCount = codeJson.size()
     if(debugMode) log.debug "The size of the codeJson is ${codeJsonCount}"
     while(availableCodePosition<=codeJsonCount) {
@@ -554,8 +559,4 @@ def deleteDoorLockCode(lock, position) {
         return false
     }
     return true
-}
-
-void waiting() {
-    log.info "Waiting to check the lock programming"
 }
