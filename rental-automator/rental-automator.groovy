@@ -52,7 +52,7 @@ preferences {
                 paragraph "<p style=\"color:green;\">AirBNB Calendar URL Verified & Tested</p>"
             } 
             if(!state.testCalendarUrlState && state.testCalendarUrlState != null) {
-                paragraph "<p style=\"color:red;\"><strong>There's an issue with the AirBNB Calendar URL. Please check the URL and Hubitat logs and re-try</strong></p>"
+                paragraph "<p style=\"color:red;\"><strong>There's an issue with the AirBNB Calendar URL. Please check the calendar URL, click the Save button at the bottom of the page, then try again</strong></p>"
             }
         }
         section{
@@ -279,6 +279,11 @@ def getCalendarData(calendarUrl) {
 
 def testCalendarUrl(calendarUrl) {
     log.info "Testing the iCalendar data"
+    if(!calendarUrl) {
+        log.info "The calendar URL must be saved first. Please enter all required settings, save, then try again"
+        state.testCalendarUrlState = false
+        return
+    }
     try {
         def iCalData = getCalendarData(calendarUrl)
         def iCalDict = iCalToMapListAirBnB(iCalData)
