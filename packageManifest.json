@@ -1,12 +1,12 @@
 {
   "packageName": "Rental Automator",
   "author": "TheDanHealy",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "minimumHEVersion": "2.3",
   "documentationLink": "https://github.com/TheDanHealy/hubitat-rental-automator",
   "communityLink": "https://community.hubitat.com/t/release-rental-automator-for-airbnb",
-  "dateReleased": "2023-11-20",
-  "releaseNotes": "Version 1.0.4\n - Fixed bug with detecting new lock codes after programming\n - Fixed issue with waiting five seconds between lock programming events\n - Added new feature to include custom hub name in push notification",
+  "dateReleased": "2024-01-08",
+  "releaseNotes": "Version 1.0.5\n - Fixed bug with attempting calendar test when the calendar URL wasn't saved into the app's settings.",
   "apps": [
     {
       "id": "37f26328-ac23-4ec6-bfb6-871a21ca3ef3",
@@ -16,7 +16,7 @@
       "required": true,
       "oauth": false,
       "primary": true,
-      "version": "1.0.4"
+      "version": "1.0.5"
     }
   ]
 }
